@@ -7,6 +7,8 @@ using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
+    public Animator anim;
+
     public static float stretch_max = 30f;
     public float movement_speed = 2f;
     public static float max_adhesion_distance = 0.5f;
@@ -20,6 +22,7 @@ public class PlayerController : MonoBehaviour
 
     // if active, this player receives input actions and moves the other one
     public bool is_active_charater;
+    public bool isMoving = false;
     public float switch_delay_timer;
 
     private Vector2 camera_stretch;
@@ -59,6 +62,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        anim.SetBool("isMoving", isMoving);
         // align the camera parent
         camera_parent.transform.rotation = Quaternion.LookRotation(transform.up, Vector3.up);
         // if active, handle input
@@ -107,7 +111,12 @@ public class PlayerController : MonoBehaviour
 
     private void MoveInDirection(Vector3 direction)
     {
-        if (direction.sqrMagnitude == 0) return;
+        if (direction.sqrMagnitude == 0) 
+        {
+            isMoving = false;
+            return;
+        }
+        isMoving = true;
         // find out where the spider is expecting to end up
         Vector3 new_position = other_character.transform.position + (direction * Time.deltaTime * movement_speed);
 
