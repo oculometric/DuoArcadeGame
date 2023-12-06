@@ -1,5 +1,13 @@
 UserSettings
-Library
+Library/Artifacts
+Library/Bee
+Library/BurstCache
+Library/PackageCache
+Library/ScriptAssemblies
+Library/Search
+Library/ShaderCache
+Library/StateCache
+Library/TempArtifacts
 obj
 Logs
 .vs
