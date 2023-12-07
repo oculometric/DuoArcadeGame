@@ -216,7 +216,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e485acc93187e384e91c128141f9e345, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stretch_max: 30
   movement_speed: 2
+  max_adhesion_distance: 0.5
+  max_turn_angle: 77
   camera_parent: {fileID: 3337981860832071645}
   camera_actual: {fileID: 5447448725998095482}
   character_mesh: {fileID: 4320477023549104853}

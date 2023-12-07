@@ -7,9 +7,10 @@ using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
-    public static float stretch_max = 30f;
+    public float stretch_max = 30f;
     public float movement_speed = 2f;
-    public static float max_adhesion_distance = 0.5f;
+    public float max_adhesion_distance = 0.5f;
+    public float max_turn_angle = 55.0f;
 
     public GameObject camera_parent;
     public GameObject camera_actual;
@@ -116,6 +117,8 @@ public class PlayerController : MonoBehaviour
         RaycastHit rch;
         Physics.Raycast(camera_actual.transform.position, direction_to_new, out rch, 100000, ~(1 << 3));
         if (!rch.transform) return;
+
+        if ((180.0f*Mathf.Acos(Vector3.Dot(rch.normal, other_character.transform.up)))/Mathf.PI > max_turn_angle) return;
 
         // direction in which the spider should actually move
         Vector3 new_direction = (rch.point - other_character.transform.position);
