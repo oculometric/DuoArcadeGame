@@ -12,3 +12,6 @@ obj
 Logs
 .vs
 Temp
+Build
+Library/PlayerDataCache
+Library/BuildPlayerData
