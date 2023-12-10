@@ -15,3 +15,14 @@ Temp
 Build
 Library/PlayerDataCache
 Library/BuildPlayerData
+Library/ArtifactDB
+Library/ArtifactDB-lock
+Library/ShaderCache.db
+Library/SourceAssetDB
+Library/SourceAssetDB-lock
+Library/ArtifactDB
+Library/ArtifactDB
+Library/ArtifactDB-lock
+Library/ShaderCache.db
+Library/SourceAssetDB
+Library/SourceAssetDB-lock
