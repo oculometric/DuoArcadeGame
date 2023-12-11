@@ -23,7 +23,6 @@ public class PlayerController : MonoBehaviour
 
     // if active, this player receives input actions and moves the other one
     public bool is_active_charater;
-    public bool isMoving = false;
     public float switch_delay_timer;
 
     private Vector2 camera_stretch;
@@ -39,6 +38,8 @@ public class PlayerController : MonoBehaviour
         {
             camera_actual.SetActive(false);
         }
+
+        anim = character_mesh.GetComponent<Animator>();
 
         other_player_controller = other_character.GetComponent<PlayerController>();
 
@@ -63,7 +64,6 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        anim.SetBool("isMoving", isMoving);
         // align the camera parent
         camera_parent.transform.rotation = Quaternion.LookRotation(transform.up, Vector3.up);
         // if active, handle input
@@ -114,18 +114,19 @@ public class PlayerController : MonoBehaviour
     {
         if (direction.sqrMagnitude == 0) 
         {
-            isMoving = false;
+            other_player_controller.anim.SetTrigger("StopMove");
             return;
         }
-        isMoving = true;
+        other_player_controller.anim.SetTrigger("Move");
         // find out where the spider is expecting to end up
         Vector3 new_position = other_character.transform.position + (direction * Time.deltaTime * movement_speed);
 
         // ray pointing to that point
         Vector3 direction_to_new = (new_position - camera_actual.transform.position).normalized;
         RaycastHit rch;
-        Physics.Raycast(camera_actual.transform.position, direction_to_new, out rch, 100000, ~(1 << 3));
+        Physics.Raycast(camera_actual.transform.position, direction_to_new, out rch, 100000, ~((1<<3) | (1<<7)));
         if (!rch.transform) return;
+        if (rch.transform.CompareTag("DontPathOn")) return;
 
         if ((180.0f*Mathf.Acos(Vector3.Dot(rch.normal, other_character.transform.up)))/Mathf.PI > max_turn_angle) return;
 
@@ -145,11 +146,11 @@ public class PlayerController : MonoBehaviour
         other_character.transform.rotation = Quaternion.LookRotation(new_direction, rch.normal);
         // move spider to new position
         other_character.transform.position = new_position;
+        other_character.transform.parent = rch.transform;
     }
 
     private void HandOffActive()
     {
-        Debug.Log("switch");
         is_active_charater = false;
         other_player_controller.is_active_charater = true;
         other_player_controller.switch_delay_timer = 0.5f;
